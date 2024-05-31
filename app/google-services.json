@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "474205686367",
+    "firebase_url": "https://attractions-app-cb9ec-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "attractions-app-cb9ec",
+    "storage_bucket": "attractions-app-cb9ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474205686367:android:b3c903ac040f81bbcde9ea",
+        "android_client_info": {
+          "package_name": "com.example.attractions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrq4n2jd5U42dlQOlgCQXDjKE9YwxL1Es"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

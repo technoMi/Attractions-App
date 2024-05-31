@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Attractions</string>
+    <string name="Chats">Chats</string>
+    <string name="new_chat">New chat</string>
+    <string name="attractions">Attractions</string>
+    <string name="Profile">Profile</string>
+</resources>
