@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (binding.emailEt.getText().toString().isEmpty() || binding.passwordEt.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                    showToast("Fields cannot be empty");
                 }else{
                     FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.emailEt.getText().toString(), binding.passwordEt.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()){
                                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                     } else {
-                                        Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                        showToast(Objects.requireNonNull(task.getException()).getMessage());
                                     }
                                 }
                             });
@@ -54,5 +54,13 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
+    }
+
+    private void showToast(String text) {
+        try {
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            // do nothing
+        }
     }
 }

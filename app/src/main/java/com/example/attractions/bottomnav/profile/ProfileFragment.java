@@ -89,7 +89,11 @@ public class ProfileFragment extends Fragment {
                         binding.usernameTv.setText(username);
 
                         if (!profileImage.isEmpty()) {
-                            Glide.with(getContext()).load(profileImage).into(binding.profileImageView);
+                            try {
+                                Glide.with(getContext()).load(profileImage).into(binding.profileImageView);
+                            } catch (Exception ignored) {
+                                showToast("Error. Try again later");
+                            }
                         }
                         binding.progressBar.setVisibility(View.INVISIBLE);
                     }
@@ -102,10 +106,14 @@ public class ProfileFragment extends Fragment {
     }
 
     private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        pickImageActivityResultLauncher.launch(intent);
+        try {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            pickImageActivityResultLauncher.launch(intent);
+        } catch (Exception ignored) {
+            showToast("Error. Try again later...");
+        }
     }
 
     private void uploadImage() {
@@ -114,12 +122,20 @@ public class ProfileFragment extends Fragment {
 
             FirebaseStorage.getInstance().getReference().child("images/" + uid)
                     .putFile(filePath).addOnSuccessListener(taskSnapshot -> {
-                        Toast.makeText(getContext(), "Photo upload complete", Toast.LENGTH_SHORT).show();
+                        showToast("Photo upload complete");
 
                         FirebaseStorage.getInstance().getReference().child("images/" + uid).getDownloadUrl()
                                 .addOnSuccessListener(uri -> FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .child("profileImage").setValue(uri.toString()));
                     });
+        }
+    }
+
+    private void showToast(String text) {
+        try {
+            if (isAdded()) Toast.makeText(requireActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            // do nothing
         }
     }
 }

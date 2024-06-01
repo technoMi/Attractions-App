@@ -61,7 +61,7 @@ public class ChatsFragment extends Fragment {
                         chats.add(chat);
                     }
                 } catch (NullPointerException ignored) {
-                    Toast.makeText(getContext(), "Nothing to show. Create a dialogue.", Toast.LENGTH_SHORT).show();
+                    showToast("Nothing to show. Create a dialogue.");
                 }
                 if (chats.isEmpty()) {
                     binding.thereIsNothingLabel.setVisibility(View.VISIBLE);
@@ -74,7 +74,15 @@ public class ChatsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Failed to get user chats", Toast.LENGTH_SHORT).show();
+                showToast("Failed to get user chats");
+            }
+
+            private void showToast(String text) {
+                try {
+                    if (isAdded()) Toast.makeText(requireActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                } catch (NullPointerException e) {
+                    // do nothing
+                }
             }
         });
     }

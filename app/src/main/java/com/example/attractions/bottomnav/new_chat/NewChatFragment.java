@@ -62,7 +62,7 @@ public class NewChatFragment extends Fragment {
                         binding.thereIsNothingLabel.setVisibility(View.VISIBLE);
                     }
                 } catch (NullPointerException ignored) {
-                    Toast.makeText(getContext(), "Error. Try again later.", Toast.LENGTH_SHORT).show();
+                    showToast("Error. Try again later");
                 }
                 binding.progressBar2.setVisibility(View.INVISIBLE);
             }
@@ -70,6 +70,14 @@ public class NewChatFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+
+            private void showToast(String text) {
+                try {
+                    if (isAdded()) Toast.makeText(requireActivity().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                } catch (NullPointerException e) {
+                    // do nothing
+                }
             }
         });
     }

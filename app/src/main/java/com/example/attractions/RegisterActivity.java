@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.signUpBtn.setOnClickListener(v -> {
             if (binding.emailEt.getText().toString().isEmpty() || binding.passwordEt.getText().toString().isEmpty()
                 || binding.usernameEt.getText().toString().isEmpty()){
-                Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                showToast("Fields cannot be empty");
             }else{
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(binding.emailEt.getText().toString(), binding.passwordEt.getText().toString())
                         .addOnCompleteListener(task -> {
@@ -46,10 +46,18 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             } else {
-                                Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                showToast(Objects.requireNonNull(task.getException()).getMessage());
                             }
                         });
             }
         });
+    }
+
+    private void showToast(String text) {
+        try {
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            // do nothing
+        }
     }
 }

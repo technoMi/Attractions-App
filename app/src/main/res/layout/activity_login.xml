@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/image1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,21 +30,21 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <LinearLayout
+        android:id="@+id/email_lin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/email_lin"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="34dp"
-        app:layout_constraintTop_toBottomOf="@id/login_title"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@id/login_title">
 
         <ImageView
             android:id="@+id/icon_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/email_icon"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/email_icon" />
 
         <EditText
             android:id="@+id/email_et"
@@ -52,11 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:fontFamily="@font/ubuntu_light"
-            android:hint="Email"
-            />
+            android:hint="Email" />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -92,9 +90,9 @@
         android:id="@+id/login_btn"
         android:layout_width="268dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:backgroundTint="@color/orange"
         android:fontFamily="@font/ubuntu_light"
-        android:layout_marginTop="50dp"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +101,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
