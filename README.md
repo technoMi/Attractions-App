@@ -1,6 +1,8 @@
 ﻿# Attractions-App (Java, XML, FireBase)
 ##### Версия 0.3 (Возможны редкие вылеты. Сейчас это не страшно)
 
+![Alt-текст](https://github.com/technoMi/Attractions-App/blob/main/img/maket.png)
+
 Использутся моя база данных Firebase. Позже прикреплю инструкцию по настройке базы данных. Там ничего сложного. 
 
 В папке "APKs" готовая сборка приложения.
