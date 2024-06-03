@@ -84,7 +84,9 @@ public class ChatActivity extends AppCompatActivity {
                             messages.add(new Message(messageId, ownerId, text, date));
                         }
 
-                        binding.messagesRv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                        LinearLayoutManager llm = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
+                        llm.setStackFromEnd(true);
+                        binding.messagesRv.setLayoutManager(llm);
                         binding.messagesRv.setAdapter(new MessagesAdapter(messages));
                     }
 

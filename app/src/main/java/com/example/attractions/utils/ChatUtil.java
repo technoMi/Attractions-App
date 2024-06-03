@@ -22,17 +22,27 @@ public class ChatUtil {
 
     public static void createChat(User user, Context context){
         String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        HashMap<String, String> chatInfo = new HashMap<>();
-        chatInfo.put("user1", uid);
-        chatInfo.put("user2", user.uid);
-
         String chatId = generateChatId(uid, user.uid);
-        FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId)
-                .setValue(chatInfo);
 
-        addChatIdToUser(uid, chatId);
-        addChatIdToUser(user.uid, chatId);
+        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId);
+        chatRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                if (task.getResult().exists()){
+                    Toast.makeText(context, "Chat with this user already exists!", Toast.LENGTH_SHORT).show();
+                } else {
+                    HashMap<String, String> chatInfo = new HashMap<>();
+                    chatInfo.put("user1", uid);
+                    chatInfo.put("user2", user.uid);
+
+                    chatRef.setValue(chatInfo);
+                    addChatIdToUser(uid, chatId);
+                    addChatIdToUser(user.uid, chatId);
+                    Toast.makeText(context, "New chat has been created", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
 
 
     private static String generateChatId(String userId1, String userId2){
@@ -61,4 +71,5 @@ public class ChatUtil {
         str += (str.isEmpty()) ? chatId : (","+chatId);
         return str;
     }
+
 }

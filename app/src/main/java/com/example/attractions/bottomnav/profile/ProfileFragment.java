@@ -85,8 +85,10 @@ public class ProfileFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String username = snapshot.child("username").getValue().toString();
                         String profileImage = snapshot.child("profileImage").getValue().toString();
+                        String userMail = snapshot.child("email").getValue().toString();
 
                         binding.usernameTv.setText(username);
+                        binding.usermailTv.setText(userMail);
 
                         if (!profileImage.isEmpty()) {
                             try {
@@ -96,6 +98,7 @@ public class ProfileFragment extends Fragment {
                             }
                         }
                         binding.progressBar.setVisibility(View.INVISIBLE);
+                        binding.content.setVisibility(View.VISIBLE);
                     }
 
                     @Override

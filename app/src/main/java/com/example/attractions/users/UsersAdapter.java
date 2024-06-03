@@ -11,17 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.attractions.R;
+import com.example.attractions.cities.City;
 import com.example.attractions.utils.ChatUtil;
 
 public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder>{
 
-    private ArrayList<User> users = new ArrayList<>();
+    //private ArrayList<User> users = new ArrayList<>();
     private final Context context;
 
-    public UsersAdapter(ArrayList<User> users, Context context){
-        this.users = users;
+    private final List<User> userList;
+
+    public UsersAdapter(Context context, List<User> userList){
+        this.userList = userList;
         this.context = context;
     }
 
@@ -34,7 +38,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        User user = users.get(position);
+        User user = userList.get(position);
 
         holder.username_tv.setText(user.username);
 
@@ -49,6 +53,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder>{
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return userList.size();
     }
 }
