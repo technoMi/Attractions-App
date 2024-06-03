@@ -62,7 +62,7 @@ public class AttractionsFragment extends Fragment {
                         }
                     }
                     filteredList.addAll(cityList);
-                    cityAdapter = new CityAdapter(requireContext(), filteredList, city -> {
+                    cityAdapter = new CityAdapter(getContext(), filteredList, city -> {
                         Intent intent = new Intent(requireActivity(), CityInfoActivity.class);
                         intent.putExtra("city", city.id);
                         startActivity(intent);
