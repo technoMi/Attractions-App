@@ -61,7 +61,7 @@ public class ChatsFragment extends Fragment {
                         chats.add(chat);
                     }
                 } catch (NullPointerException ignored) {
-                    showToast("Nothing to show. Create a dialogue.");
+                    // do nothing
                 }
                 if (chats.isEmpty()) {
                     binding.thereIsNothingLabel.setVisibility(View.VISIBLE);

@@ -5,6 +5,7 @@
     <color name="white_orange">#FFF9EB</color>
     <color name="orange">#F1B821</color>
     <color name="black_orange">#FFC01A</color>
-    <color name="light_blue">#FFE7A7</color>
-    <color name="grey">#f3f3f3</color>
+    <color name="beige">#FFE7A7</color>
+    <color name="light_beige">#FBFBFB</color>
+    <color name="grey">#EDEDED</color>
 </resources>

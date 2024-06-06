@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +37,10 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         String chatId = getIntent().getStringExtra("chatId");
+        String interlocutorName = getIntent().getStringExtra("interlocutorName");
+        String interlocutorProfileImage = getIntent().getStringExtra("interlocutorProfileImage");
+
+        loadInterlocutorInfo(interlocutorName, interlocutorProfileImage);
 
         loadMessages(chatId);
 
@@ -65,6 +71,13 @@ public class ChatActivity extends AppCompatActivity {
                 .child("messages").push().setValue(messageInfo);
     }
 
+    private void loadInterlocutorInfo(String name, String imgUrl) {
+        if (!imgUrl.isEmpty())
+            Glide.with(getApplicationContext()).load(imgUrl).into(binding.profileIv);
+        if (!name.isEmpty())
+            binding.usernameTv.setText(name);
+    }
+
     private void loadMessages(String chatId){
         if (chatId==null) return;
 
@@ -72,7 +85,12 @@ public class ChatActivity extends AppCompatActivity {
                 .child(chatId).child("messages").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists()) return;
+                        if (!snapshot.exists()) {
+                            binding.textView.setText("Начните беседу первым!");
+                            return;
+                        } else {
+                            binding.textView.setVisibility(View.INVISIBLE);
+                        }
 
                         List<Message> messages = new ArrayList<>();
                         for (DataSnapshot messageSnapshot : snapshot.getChildren()){
