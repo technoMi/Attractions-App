@@ -33,6 +33,11 @@
             android:name=".CityInfoActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi"/>
+        <activity
+            android:name=".AttractionInfoActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi">
 
         </activity>

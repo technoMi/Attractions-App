@@ -95,9 +95,9 @@ public class ChatActivity extends AppCompatActivity {
                         List<Message> messages = new ArrayList<>();
                         for (DataSnapshot messageSnapshot : snapshot.getChildren()){
                             String messageId = messageSnapshot.getKey();
-                            String ownerId = messageSnapshot.child("ownerId").getValue().toString();
-                            String text = messageSnapshot.child("text").getValue().toString();
-                            String date = messageSnapshot.child("date").getValue().toString();
+                            String ownerId = Objects.requireNonNull(messageSnapshot.child("ownerId").getValue()).toString();
+                            String text = Objects.requireNonNull(messageSnapshot.child("text").getValue()).toString();
+                            String date = Objects.requireNonNull(messageSnapshot.child("date").getValue()).toString();
 
                             messages.add(new Message(messageId, ownerId, text, date));
                         }

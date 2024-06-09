@@ -38,14 +38,23 @@
                 tools:text="Username" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/grey"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messages_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_beige"
             android:layout_weight="1"
             app:layout_constraintBottom_toTopOf="@+id/message_et"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/grey"/>
 
         <LinearLayout
             android:layout_width="match_parent"
