@@ -58,12 +58,14 @@ public class AttractionInfoActivity extends AppCompatActivity {
                         String description = requireNonNull(attractionSnapshot.child("description").getValue()).toString();
                         String imgUrl = requireNonNull(attractionSnapshot.child("imgBg").getValue()).toString();
                         String workingHours = requireNonNull(attractionSnapshot.child("workingHours").getValue()).toString();
-                        String rating = requireNonNull(attractionSnapshot.child("rating").getValue()).toString();
+                        String rating = String.format(requireNonNull(attractionSnapshot.child("rating").getValue()).toString());
+                        String formattedRating = String.format("%.1f", Float.parseFloat(rating));
 
                         binding.attractionNameTitle.setText(title);
                         binding.attractionDescription.setText(description);
                         binding.workingHours.setText(workingHours);
-                        binding.attractionRating.setText("⭐ " + rating);
+
+                        binding.attractionRating.setText("⭐ " + formattedRating);
 
                         Glide.with(getApplicationContext()).load(imgUrl).into(binding.imgAttractionLandscape);
 
@@ -81,8 +83,7 @@ public class AttractionInfoActivity extends AppCompatActivity {
             }
         });
 
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
-        ratingBar.setOnRatingBarChangeListener(
+        binding.ratingBar.setOnRatingBarChangeListener(
                 (ratingBar1, rating, fromUser) ->
                         database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

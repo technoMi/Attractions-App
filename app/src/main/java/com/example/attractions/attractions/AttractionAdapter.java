@@ -45,7 +45,11 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.At
         Attraction attraction = attractionList.get(position);
 
         holder.title.setText(attraction.getAttraction_name());
-        holder.rating.setText("⭐ " + attraction.getAttraction_rating());
+
+
+        float rating = Float.parseFloat(attraction.getAttraction_rating());
+        String formattedRating = String.format("%.1f", rating);
+        holder.rating.setText("⭐ " + formattedRating);
 
         String imgUri = String.valueOf(Uri.parse(attraction.attraction_imgPoster()).buildUpon().scheme("https").build());
         Glide.with(holder.itemView.getContext()).load(imgUri).apply(RequestOptions.circleCropTransform()).into(holder.imgPoster);
