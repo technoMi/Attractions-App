@@ -69,7 +69,6 @@ public class CityInfoActivity extends AppCompatActivity {
                         binding.attractionsRv.setAdapter(new AttractionAdapter(attractions));
 
                         binding.scrollView.smoothScrollTo(0, 0);
-                        //binding.scrollView.post(() ->  binding.scrollView.fullScroll(View.FOCUS_UP));
 
                         binding.linearLayout.setVisibility(View.VISIBLE);
                         binding.progressBar.setVisibility(View.INVISIBLE);

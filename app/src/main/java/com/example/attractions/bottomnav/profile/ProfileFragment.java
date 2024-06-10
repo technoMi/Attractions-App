@@ -1,5 +1,7 @@
 package com.example.attractions.bottomnav.profile;
 
+import static java.util.Objects.requireNonNull;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,8 +20,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.example.attractions.attractions.Attraction;
+import com.example.attractions.attractions.AttractionAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.example.attractions.LoginActivity;
@@ -35,6 +42,10 @@ import com.example.attractions.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
+
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    private final String currentUserId = requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     private Uri filePath;
 
     @Nullable
@@ -43,6 +54,8 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
         loadUserInfo();
+
+        loadFavorites();
 
         binding.profileImageView.setOnClickListener(v -> selectImage());
 
@@ -79,7 +92,7 @@ public class ProfileFragment extends Fragment {
     );
 
     private void loadUserInfo() {
-        FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        database.getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -103,9 +116,47 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        //do nothing
                     }
                 });
+    }
+
+    private void loadFavorites() {
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    DataSnapshot userFavorites = snapshot.child("Users").child(currentUserId).child("favorites");
+                    ArrayList<String> favorites = new ArrayList<>();
+                    for (DataSnapshot child: userFavorites.getChildren()) {
+                        String key = child.getKey();
+                        favorites.add(key);
+                    }
+                    ArrayList<Attraction> attractions = new ArrayList<>();
+                    for (String attractionId : favorites) {
+                        DataSnapshot attractionSnapshot = snapshot.child("Attractions").child(attractionId);
+                        String attraction_name = Objects.requireNonNull(attractionSnapshot.child("title").getValue()).toString();
+                        String attraction_rating = Objects.requireNonNull(attractionSnapshot.child("rating").getValue()).toString();
+                        String attraction_imgPoster = Objects.requireNonNull(attractionSnapshot.child("imgPoster").getValue()).toString();
+                        attractions.add(new Attraction(attractionId, attraction_name, attraction_rating, attraction_imgPoster));
+                    }
+
+                    binding.favoritesRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                    if (attractions.isEmpty()) {
+                        binding.favoritesTitle.setText("На данный момент у Вас нет избранных достопримечательностей");
+                    } else {
+                        binding.favoritesRv.setAdapter(new AttractionAdapter(attractions));
+                    }
+                } catch (Exception ignored) {
+                    showToast("Data upload error. Please try again later...");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //do nothing
+            }
+        });
     }
 
     private void selectImage() {

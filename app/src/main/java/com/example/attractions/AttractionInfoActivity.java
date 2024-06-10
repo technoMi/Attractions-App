@@ -3,6 +3,7 @@ package com.example.attractions;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RatingBar;
@@ -41,6 +42,8 @@ public class AttractionInfoActivity extends AppCompatActivity {
 
         userEvaluationCheck(binding);
 
+        favoriteAttractionCheck(binding);
+
         assert attractionId != null;
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -51,7 +54,7 @@ public class AttractionInfoActivity extends AppCompatActivity {
                 DataSnapshot attractionSnapshot = snapshot.child("Attractions").child(attractionId);
 
                 if (!snapshot.exists()) {
-                    Toast.makeText(getApplicationContext(), "\"Data upload error. Please try again later...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Data upload error. Please try again later...", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
                         String title = requireNonNull(attractionSnapshot.child("title").getValue()).toString();
@@ -128,7 +131,7 @@ public class AttractionInfoActivity extends AppCompatActivity {
 
                                             currentUserReference.setValue(Float.parseFloat(formattedRating));
 
-                                            changeBindingState(binding, userRating);
+                                            changeRatingBarState(binding, userRating);
                                         } else {
                                             throw new NullPointerException();
                                         }
@@ -147,6 +150,34 @@ public class AttractionInfoActivity extends AppCompatActivity {
                         }
                         ));
 
+        binding.favoriteButton.setOnClickListener(v ->
+                database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        DataSnapshot dataSnapshot = snapshot
+                                .child("Users")
+                                .child(currentUserId)
+                                .child("favorites")
+                                .child(attractionId);
+
+                        DatabaseReference reference = dataSnapshot.getRef();
+                        //todo написать метод, выводящий тост
+                        if (dataSnapshot.exists()) {
+                            reference.removeValue();
+                            Toast.makeText(getApplicationContext(), "Удалено из избранных", Toast.LENGTH_SHORT).show();
+                        } else {
+                            reference.setValue(attractionId);
+                            Toast.makeText(getApplicationContext(), "Сохранено в избранных", Toast.LENGTH_SHORT).show();
+                        }
+                        favoriteAttractionCheck(binding);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //do nothing
+                    }
+        }));
+
     }
 
     private void userEvaluationCheck(ActivityAttractionInfoBinding binding) {
@@ -162,7 +193,7 @@ public class AttractionInfoActivity extends AppCompatActivity {
                     isUserEvaluationExist = true;
                     Float userEvaluation = userEvaluationsSnapshot
                             .getValue(Float.class);
-                    changeBindingState(binding, userEvaluation);
+                    changeRatingBarState(binding, userEvaluation);
                 } else {
                     isUserEvaluationExist = false;
                 }
@@ -175,9 +206,37 @@ public class AttractionInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void changeBindingState(ActivityAttractionInfoBinding binding, Float userEvaluation) {
+    private void changeRatingBarState(ActivityAttractionInfoBinding binding, Float userEvaluation) {
         binding.ratingHint.setText("Ваша оценка:");
         binding.ratingBar.setRating(userEvaluation);
         binding.ratingBar.setIsIndicator(true);
+    }
+
+    private void favoriteAttractionCheck(ActivityAttractionInfoBinding binding) {
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot dataSnapshot = snapshot
+                        .child("Users")
+                        .child(currentUserId)
+                        .child("favorites")
+                        .child(attractionId);
+
+                changeFavoriteButtonState(dataSnapshot.exists(), binding);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //do nothing
+            }
+        });
+    }
+
+    private void changeFavoriteButtonState(Boolean isFavorite, ActivityAttractionInfoBinding binding) {
+        if (isFavorite) {
+            binding.favoriteButton.setBackgroundResource(R.drawable.ic_favorite);
+        } else {
+            binding.favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border);
+        }
     }
 }

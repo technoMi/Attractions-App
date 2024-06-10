@@ -5,4 +5,5 @@
     <string name="attractions">Города</string>
     <string name="profile">Профиль</string>
     <string name="change_photo_title">Нажмите на аватар, чтобы его сменить</string>
+    <string name="favorites_title">Ваши избранные достопримечательности</string>
 </resources>
