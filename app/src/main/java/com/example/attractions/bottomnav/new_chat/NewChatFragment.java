@@ -111,6 +111,7 @@ public class NewChatFragment extends Fragment {
                     showToast(getString(R.string.some_error));
                 }
                 binding.progressBar2.setVisibility(View.INVISIBLE);
+                binding.content.setVisibility(View.VISIBLE);
             }
 
             @Override

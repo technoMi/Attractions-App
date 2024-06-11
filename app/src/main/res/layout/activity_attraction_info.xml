@@ -108,12 +108,28 @@
                     android:fontFamily="@font/ubuntu_light"
                     android:text=""
                     android:paddingVertical="8dp"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
+
+                <View
+                    android:id="@+id/greyLine6"
+                    android:layout_width="160dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="1px"
+                    android:background="@color/black"/>
+
+                <fragment
+                    android:id="@+id/map_view"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="340dp"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_gravity="center"
+                    tools:context=".AttractionInfoActivity" />
 
                 <View
                     android:id="@+id/greyLine5"
                     android:layout_width="160dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:layout_height="1px"
                     android:background="@color/black"/>
 
@@ -142,7 +158,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout

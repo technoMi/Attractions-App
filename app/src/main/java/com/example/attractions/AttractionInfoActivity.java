@@ -3,8 +3,11 @@ package com.example.attractions;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -14,6 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.attractions.databinding.ActivityAttractionInfoBinding;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,8 +32,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Locale;
+import java.util.Map;
 
-public class AttractionInfoActivity extends AppCompatActivity {
+public class AttractionInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private final String currentUserId = requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -31,6 +42,52 @@ public class AttractionInfoActivity extends AppCompatActivity {
     private String attractionId;
 
     private Boolean isUserEvaluationExist;
+
+    private String[] coordinates = null;
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot dataSnapshot = snapshot.child("Attractions")
+                        .child(attractionId)
+                        .child("coordinates");
+
+                googleMap.getUiSettings().setZoomGesturesEnabled(false);
+                googleMap.getUiSettings().setScrollGesturesEnabled(false);
+
+                if (dataSnapshot.exists()) {
+                    String crd = dataSnapshot.getValue(String.class);
+
+                    assert crd != null;
+                    coordinates = crd.split("/");
+
+                    LatLng location = new LatLng(Float.parseFloat(coordinates[0]), Float.parseFloat(coordinates[1]));
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14));
+                    MarkerOptions options = new MarkerOptions().position(location).title("Местоположение");
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                    googleMap.addMarker(options);
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.map_data_error), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // do nothing
+            }
+        });
+
+        googleMap.setOnMapClickListener(latLng -> {
+            if (coordinates != null) {
+                Intent mapApp = new Intent();
+                mapApp.setAction(Intent.ACTION_VIEW);
+                mapApp.setData(Uri.parse("geo:" + coordinates[0] + ", " + coordinates[1]));
+                startActivity(mapApp);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +100,10 @@ public class AttractionInfoActivity extends AppCompatActivity {
         userEvaluationCheck(binding);
 
         favoriteAttractionCheck(binding);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_view);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
 
         assert attractionId != null;
         database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -177,7 +238,6 @@ public class AttractionInfoActivity extends AppCompatActivity {
                         //do nothing
                     }
         }));
-
     }
 
     private void userEvaluationCheck(ActivityAttractionInfoBinding binding) {
