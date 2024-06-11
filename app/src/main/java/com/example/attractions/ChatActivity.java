@@ -47,7 +47,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.sendMessageBtn.setOnClickListener(v -> {
             String message = binding.messageEt.getText().toString();
             if (message.isEmpty()){
-                Toast.makeText(this, "Message field cannot be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.empty_message_error), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -86,7 +86,7 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {
-                            binding.textView.setText("Начните беседу первым!");
+                            binding.textView.setText(getString(R.string.lets_start_new_conversation));
                             return;
                         } else {
                             binding.textView.setVisibility(View.INVISIBLE);

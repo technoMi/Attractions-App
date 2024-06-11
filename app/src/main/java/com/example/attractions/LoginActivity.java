@@ -31,29 +31,26 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (binding.emailEt.getText().toString().isEmpty() || binding.passwordEt.getText().toString().isEmpty()){
-                    showToast("Fields cannot be empty");
-                }else{
+                    showToast(getString(R.string.empty_field_error));
+                } else {
                     FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.emailEt.getText().toString(), binding.passwordEt.getText().toString())
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()){
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    } else {
-                                        showToast(Objects.requireNonNull(task.getException()).getMessage());
-                                    }
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()){
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                } else {
+                                    showToast(Objects.requireNonNull(task.getException()).getMessage());
                                 }
                             });
                 }
             }
         });
 
-        binding.goToRegisterActivityTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
+        binding.goToRegisterActivityTv.setOnClickListener(v ->
+                startActivity(new Intent(
+                        LoginActivity.this,
+                        RegisterActivity.class)
+                )
+        );
     }
 
     private void showToast(String text) {

@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.signUpBtn.setOnClickListener(v -> {
             if (binding.emailEt.getText().toString().isEmpty() || binding.passwordEt.getText().toString().isEmpty()
                 || binding.usernameEt.getText().toString().isEmpty()){
-                showToast("Fields cannot be empty");
+                showToast(getString(R.string.empty_field_error));
             }else{
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(binding.emailEt.getText().toString(), binding.passwordEt.getText().toString())
                         .addOnCompleteListener(task -> {

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.attractions.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,7 +75,7 @@ public class ChatsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                showToast("Failed to get user chats");
+                showToast(getString(R.string.data_upload_error));
             }
 
             private void showToast(String text) {

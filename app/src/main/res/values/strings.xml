@@ -1,9 +1,37 @@
 <resources>
+
     <string name="app_name">Attractions</string>
+
     <string name="chats">Чаты</string>
     <string name="new_chat">Новый чат</string>
     <string name="attractions">Города</string>
     <string name="profile">Профиль</string>
+
     <string name="change_photo_title">Нажмите на аватар, чтобы его сменить</string>
     <string name="favorites_title">Ваши избранные достопримечательности</string>
+    <string name="no_favorites_title">На данный момент у Вас нет избранных достопримечательностей</string>
+
+    <string name="login_title">Вход</string>
+    <string name="email_hint">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="login_button">Войти</string>
+    <string name="new_to_here">У вас нет аккаунта?</string>
+    <string name="sign_up">Зарегистрироваться</string>
+
+    <string name="deleted_from_favorites">Удалено из избранных</string>
+    <string name="add_to_favorites">Добавлено в избранные</string>
+
+    <string name="your_evaluation">Ваша оценка:</string>
+
+    <string name="sign_up_title">Регистрация</string>
+    <string name="username">Никнейм (виден всем)</string>
+
+    <string name="data_upload_error">Ошибка загрузки данных. Повторите попытку позже...</string>
+    <string name="some_error">Ошибка. Повторите попытку позже...</string>
+    <string name="photo_upload_complete">Фотография загружена</string>
+    <string name="empty_message_error">Сообщение не может быть пустым</string>
+    <string name="empty_field_error">Поля не могут быть пустыми!</string>
+
+    <string name="lets_start_new_conversation">Начните беседу первым!</string>
+
 </resources>

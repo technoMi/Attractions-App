@@ -73,7 +73,7 @@ public class CityInfoActivity extends AppCompatActivity {
                         binding.linearLayout.setVisibility(View.VISIBLE);
                         binding.progressBar.setVisibility(View.INVISIBLE);
                     } catch (Exception ignored) {
-                        showToast("Data upload error. Please try again later...");
+                        showToast(getString(R.string.data_upload_error));
                     }
                 }
             }

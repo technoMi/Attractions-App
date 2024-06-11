@@ -54,7 +54,7 @@ public class AttractionInfoActivity extends AppCompatActivity {
                 DataSnapshot attractionSnapshot = snapshot.child("Attractions").child(attractionId);
 
                 if (!snapshot.exists()) {
-                    Toast.makeText(getApplicationContext(), "Data upload error. Please try again later...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.data_upload_error), Toast.LENGTH_SHORT).show();
                 } else {
                     try {
                         String title = requireNonNull(attractionSnapshot.child("title").getValue()).toString();
@@ -164,10 +164,10 @@ public class AttractionInfoActivity extends AppCompatActivity {
                         //todo написать метод, выводящий тост
                         if (dataSnapshot.exists()) {
                             reference.removeValue();
-                            Toast.makeText(getApplicationContext(), "Удалено из избранных", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.deleted_from_favorites), Toast.LENGTH_SHORT).show();
                         } else {
                             reference.setValue(attractionId);
-                            Toast.makeText(getApplicationContext(), "Сохранено в избранных", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.add_to_favorites), Toast.LENGTH_SHORT).show();
                         }
                         favoriteAttractionCheck(binding);
                     }
@@ -207,7 +207,7 @@ public class AttractionInfoActivity extends AppCompatActivity {
     }
 
     private void changeRatingBarState(ActivityAttractionInfoBinding binding, Float userEvaluation) {
-        binding.ratingHint.setText("Ваша оценка:");
+        binding.ratingHint.setText(getString(R.string.your_evaluation));
         binding.ratingBar.setRating(userEvaluation);
         binding.ratingBar.setIsIndicator(true);
     }

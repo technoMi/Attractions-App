@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.example.attractions.R;
 import com.example.attractions.attractions.Attraction;
 import com.example.attractions.attractions.AttractionAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -107,7 +108,7 @@ public class ProfileFragment extends Fragment {
                             try {
                                 Glide.with(getContext()).load(profileImage).into(binding.profileImageView);
                             } catch (Exception ignored) {
-                                showToast("Error. Try again later");
+                                showToast(getString(R.string.some_error));
                             }
                         }
                         binding.progressBar.setVisibility(View.INVISIBLE);
@@ -143,12 +144,12 @@ public class ProfileFragment extends Fragment {
 
                     binding.favoritesRv.setLayoutManager(new LinearLayoutManager(getContext()));
                     if (attractions.isEmpty()) {
-                        binding.favoritesTitle.setText("На данный момент у Вас нет избранных достопримечательностей");
+                        binding.favoritesTitle.setText(R.string.no_favorites_title);
                     } else {
                         binding.favoritesRv.setAdapter(new AttractionAdapter(attractions));
                     }
                 } catch (Exception ignored) {
-                    showToast("Data upload error. Please try again later...");
+                    showToast(getString(R.string.data_upload_error));
                 }
             }
 
@@ -166,7 +167,7 @@ public class ProfileFragment extends Fragment {
             intent.setAction(Intent.ACTION_GET_CONTENT);
             pickImageActivityResultLauncher.launch(intent);
         } catch (Exception ignored) {
-            showToast("Error. Try again later...");
+            showToast(getString(R.string.some_error));
         }
     }
 
@@ -176,7 +177,7 @@ public class ProfileFragment extends Fragment {
 
             FirebaseStorage.getInstance().getReference().child("images/" + uid)
                     .putFile(filePath).addOnSuccessListener(taskSnapshot -> {
-                        showToast("Photo upload complete");
+                        showToast(getString(R.string.photo_upload_complete));
 
                         FirebaseStorage.getInstance().getReference().child("images/" + uid).getDownloadUrl()
                                 .addOnSuccessListener(uri -> FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -24,7 +24,7 @@
         android:layout_marginStart="55dp"
         android:layout_marginTop="40dp"
         android:fontFamily="@font/ubuntu_medium"
-        android:text="Login"
+        android:text="@string/login_title"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:fontFamily="@font/ubuntu_light"
-            android:hint="Email" />
+            android:hint="@string/email_hint" />
 
     </LinearLayout>
 
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:fontFamily="@font/ubuntu_light"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             />
 
@@ -93,7 +93,7 @@
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/orange"
         android:fontFamily="@font/ubuntu_light"
-        android:text="Login"
+        android:text="@string/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_lin" />
@@ -110,14 +110,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New to here?" />
+            android:text="@string/new_to_here" />
 
         <TextView
             android:id="@+id/go_to_register_activity_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
-            android:text="Sign up"
+            android:text="@string/sign_up"
             android:textColor="@color/orange" />
     </LinearLayout>
 

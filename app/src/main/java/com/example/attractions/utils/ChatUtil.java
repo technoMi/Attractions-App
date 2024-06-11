@@ -28,7 +28,7 @@ public class ChatUtil {
         chatRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 if (task.getResult().exists()){
-                    Toast.makeText(context, "Chat with this user already exists!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Чат с этим пользователем уже существует!", Toast.LENGTH_SHORT).show();
                 } else {
                     HashMap<String, String> chatInfo = new HashMap<>();
                     chatInfo.put("user1", uid);
@@ -37,7 +37,7 @@ public class ChatUtil {
                     chatRef.setValue(chatInfo);
                     addChatIdToUser(uid, chatId);
                     addChatIdToUser(user.uid, chatId);
-                    Toast.makeText(context, "New chat has been created", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Создан новый чат", Toast.LENGTH_SHORT).show();
                 }
             }
         });

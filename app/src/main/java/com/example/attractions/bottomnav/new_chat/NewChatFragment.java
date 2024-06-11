@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.attractions.R;
 import com.example.attractions.cities.City;
 import com.example.attractions.cities.CityAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -107,7 +108,7 @@ public class NewChatFragment extends Fragment {
                         binding.thereIsNothingLabel.setVisibility(View.VISIBLE);
                     }
                 } catch (NullPointerException ignored) {
-                    showToast("Error. Try again later");
+                    showToast(getString(R.string.some_error));
                 }
                 binding.progressBar2.setVisibility(View.INVISIBLE);
             }
