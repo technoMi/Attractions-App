@@ -84,6 +84,8 @@ public class CityInfoActivity extends AppCompatActivity {
             }
 
         });
+
+        binding.backBtn.setOnClickListener(v -> finish());
     }
 
     private void showToast(String text) {

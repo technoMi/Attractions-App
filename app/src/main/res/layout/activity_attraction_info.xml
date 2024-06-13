@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".CityInfoActivity">
 
@@ -17,44 +17,71 @@
         tools:visibility="visible">
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imgAttractionLandscape"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitXY" />
+                android:layout_height="200dp">
+
+                <ImageView
+                    android:id="@+id/imgAttractionLandscape"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitXY" />
+
+                <ImageButton
+                    android:id="@+id/back_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginVertical="10dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:src="@drawable/ic_round_arrow_back_white" />
+
+                <View
+                    android:id="@+id/favorite_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_favorite_border" />
+
+            </RelativeLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <View
                     android:id="@+id/greyLine1"
                     android:layout_width="match_parent"
                     android:layout_height="3px"
-                    android:background="@color/black"/>
+                    android:background="@color/black" />
 
                 <View
                     android:id="@+id/greyLine2"
                     android:layout_width="80dp"
-                    android:layout_marginTop="24dp"
                     android:layout_height="1px"
-                    android:background="@color/black"/>
+                    android:layout_marginTop="24dp"
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/attractionNameTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:gravity="center_horizontal"
                     android:fontFamily="@font/ubuntu_light"
+                    android:gravity="center_horizontal"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
                     android:textSize="28sp" />
@@ -63,16 +90,16 @@
                     android:id="@+id/attraction_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
                     android:fontFamily="@font/ubuntu_light"
-                    android:gravity="center"
-                    android:layout_marginTop="3dp" />
+                    android:gravity="center" />
 
                 <View
                     android:id="@+id/greyLine3"
                     android:layout_width="80dp"
-                    android:layout_marginTop="6dp"
                     android:layout_height="1px"
-                    android:background="@color/black"/>
+                    android:layout_marginTop="6dp"
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/attractionDescription"
@@ -85,9 +112,9 @@
                 <View
                     android:id="@+id/greyLine4"
                     android:layout_width="160dp"
-                    android:layout_marginTop="8dp"
                     android:layout_height="1px"
-                    android:background="@color/black"/>
+                    android:layout_marginTop="8dp"
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/working_hours_title"
@@ -104,45 +131,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
-                    android:paddingHorizontal="16dp"
                     android:fontFamily="@font/ubuntu_light"
-                    android:text=""
+                    android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
-                    android:textSize="14sp"/>
+                    android:text=""
+                    android:textSize="14sp" />
 
                 <View
                     android:id="@+id/greyLine6"
                     android:layout_width="160dp"
-                    android:layout_marginTop="8dp"
                     android:layout_height="1px"
-                    android:background="@color/black"/>
+                    android:layout_marginTop="8dp"
+                    android:background="@color/black" />
+
 
                 <fragment
                     android:id="@+id/map_view"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="340dp"
                     android:layout_height="160dp"
-                    android:layout_marginTop="12dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
                     tools:context=".AttractionInfoActivity" />
+
 
                 <View
                     android:id="@+id/greyLine5"
                     android:layout_width="160dp"
-                    android:layout_marginTop="12dp"
                     android:layout_height="1px"
-                    android:background="@color/black"/>
+                    android:layout_marginTop="12dp"
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/rating_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:paddingHorizontal="16dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/ubuntu_light"
-                    android:text="Если вы были в этом месте, пожалуйста, оцените его:"
+                    android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp"
+                    android:text="Если вы были в этом месте, пожалуйста, оцените его:"
                     android:textSize="10sp" />
 
                 <RatingBar
@@ -151,9 +180,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:numStars="5"
-                    android:stepSize="1.0"
                     android:progressTint="@color/orange"
-                    android:secondaryProgressTint="@android:color/transparent"/>
+                    android:secondaryProgressTint="@android:color/transparent"
+                    android:stepSize="1.0" />
+
+                <Button
+                    android:id="@+id/leaveReview"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="240dp"
+                    android:layout_height="50dp"
+                    android:text="Оставить отзыв"/>
+
+                <View
+                    android:id="@+id/greyLine7"
+                    android:layout_width="160dp"
+                    android:layout_height="1px"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:id="@+id/rivewsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/ubuntu_light"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/other_rivews_title"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
@@ -163,6 +218,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
@@ -172,16 +228,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <View
-            android:id="@+id/favorite_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/ic_favorite_border"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

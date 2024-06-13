@@ -65,7 +65,7 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
 
                     LatLng location = new LatLng(Float.parseFloat(coordinates[0]), Float.parseFloat(coordinates[1]));
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14));
-                    MarkerOptions options = new MarkerOptions().position(location).title("Местоположение");
+                    MarkerOptions options = new MarkerOptions().position(location).title(getString(R.string.location));
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
                     googleMap.addMarker(options);
                 } else {
@@ -136,7 +136,7 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
                         binding.progressBar.setVisibility(View.INVISIBLE);
                         binding.scrollView.setVisibility(View.VISIBLE);
                     } catch (Exception ignored) {
-
+                        // do nothing
                     }
                 }
             }
@@ -222,7 +222,6 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
                                 .child(attractionId);
 
                         DatabaseReference reference = dataSnapshot.getRef();
-                        //todo написать метод, выводящий тост
                         if (dataSnapshot.exists()) {
                             reference.removeValue();
                             Toast.makeText(getApplicationContext(), getString(R.string.deleted_from_favorites), Toast.LENGTH_SHORT).show();
@@ -238,6 +237,13 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
                         //do nothing
                     }
         }));
+
+        binding.leaveReview.setOnClickListener(v -> {
+            Intent intent = new Intent(this, NewReviewActivity.class);
+            intent.putExtra("attractionId", attractionId);
+            startActivity(intent);
+        });
+        binding.backBtn.setOnClickListener(v -> finish());
     }
 
     private void userEvaluationCheck(ActivityAttractionInfoBinding binding) {

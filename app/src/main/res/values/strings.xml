@@ -35,4 +35,7 @@
 
     <string name="lets_start_new_conversation">Начните беседу первым!</string>
 
+    <string name="other_rivews_title">Отзывы других пользователей</string>
+
+    <string name="location">Местоположение</string>
 </resources>
