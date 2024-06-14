@@ -30,11 +30,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.EventListener;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class AttractionInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private ActivityAttractionInfoBinding binding;
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private final String currentUserId = requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -92,7 +97,7 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityAttractionInfoBinding binding = ActivityAttractionInfoBinding.inflate(getLayoutInflater());
+        binding = ActivityAttractionInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         attractionId = getIntent().getStringExtra("attractionId");
@@ -100,6 +105,10 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
         userEvaluationCheck(binding);
 
         favoriteAttractionCheck(binding);
+
+        checkForFeedback();
+
+        loadSingleReview();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_view);
         assert mapFragment != null;
@@ -172,7 +181,6 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
                                                 .child(attractionId)
                                                 .child("numberOfEvaluation")
                                                 .getValue(Float.class);
-
                                         float userRating = Float.parseFloat(String.valueOf(rating));
 
                                         if (currentRating != null && numberOfEvaluation != null) {
@@ -208,8 +216,7 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
                             public void onCancelled(@NonNull DatabaseError error) {
                                 //do nothing
                             }
-                        }
-                        ));
+                        }));
 
         binding.favoriteButton.setOnClickListener(v ->
                 database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -236,7 +243,7 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
                     public void onCancelled(@NonNull DatabaseError error) {
                         //do nothing
                     }
-        }));
+                }));
 
         binding.leaveReview.setOnClickListener(v -> {
             Intent intent = new Intent(this, NewReviewActivity.class);
@@ -244,6 +251,11 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
             startActivity(intent);
         });
         binding.backBtn.setOnClickListener(v -> finish());
+        binding.moreReviews.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AllReviewsActivity.class);
+            intent.putExtra("attractionId", attractionId);
+            startActivity(intent);
+        });
     }
 
     private void userEvaluationCheck(ActivityAttractionInfoBinding binding) {
@@ -304,5 +316,62 @@ public class AttractionInfoActivity extends AppCompatActivity implements OnMapRe
         } else {
             binding.favoriteButton.setBackgroundResource(R.drawable.ic_favorite_border);
         }
+    }
+
+    private void checkForFeedback() {
+        String currentUserEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+        assert currentUserEmail != null;
+        database.getReference().child("Reviews").child(attractionId).child(String.valueOf(currentUserEmail.hashCode())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    binding.leaveReview.setText("Переписать отзыв");
+                    binding.ratingTitleHint.setText("Вы можете переписать Ваш отзыв:");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // do nothing
+            }
+        });
+    }
+
+    private void loadSingleReview() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Reviews").child(attractionId);
+        ref.orderByKey().limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot node : dataSnapshot.getChildren()) {
+                        String date = node.child("date").getValue(String.class);
+                        String text = node.child("text").getValue(String.class);
+                        String userName = node.child("username").getValue(String.class);
+                        String photoUrl = node.child("photoUrl").getValue(String.class);
+                        String profileImageUrl = node.child("profileImageUrl").getValue(String.class);
+
+                        binding.singleReview.reviewText.setText(text);
+                        binding.singleReview.reviewDate.setText(date);
+
+                        if (photoUrl != null) {
+                            binding.singleReview.reviewPhoto.setVisibility(View.VISIBLE);
+                            Glide.with(getApplicationContext()).load(photoUrl).into(binding.singleReview.reviewPhoto);
+                        }
+                        if (userName != null) {
+                            binding.singleReview.reviewUsername.setText(userName);
+                            Glide.with(getApplicationContext()).load(profileImageUrl).into(binding.singleReview.reviewProfileIv);
+                        }
+                    }
+                } else {
+                    binding.reviewsArea.setVisibility(View.GONE);
+                    binding.rivewsTitle.setText("На данный момент отзывов нет");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // do nothing
+            }
+        });
     }
 }

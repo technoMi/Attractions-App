@@ -73,7 +73,7 @@
                        android:visibility="gone"/>
 
                    <ImageButton
-                       android:id="@+id/close_view"
+                       android:id="@+id/close_view_button"
                        android:layout_width="30dp"
                        android:layout_height="30dp"
                        android:layout_marginStart="24dp"

@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.spec.ECField;
 import java.text.SimpleDateFormat;
@@ -41,9 +42,13 @@ public class NewReviewActivity extends AppCompatActivity {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private String attractionId;
 
-    String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+    private final String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+    private final String currentUserEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
     private Uri filePath;
+
+    private String uniqueHash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +64,15 @@ public class NewReviewActivity extends AppCompatActivity {
                     String userText = String.valueOf(Objects.requireNonNull(binding.textInputLayout.getEditText()).getText());
                     Boolean isAnonymousReview = binding.doNotNameShowButton.isChecked();
 
-                    String currentUserEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-
                     database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String userName = snapshot.child("Users").child(currentUserId).child("username").getValue(String.class);
                             DataSnapshot data = snapshot.child("Reviews").child(attractionId);
+                            DataSnapshot userInfo = snapshot.child("Users").child(currentUserId);
                             DatabaseReference reference;
 
                             assert currentUserEmail != null;
-                            String uniqueHash = String.valueOf(attractionId.hashCode()) + String.valueOf(currentUserEmail.hashCode());
+                            uniqueHash = String.valueOf(currentUserEmail.hashCode());
                             reference = data.child(uniqueHash).getRef();
                             reference.setValue(uniqueHash);
 
@@ -79,9 +82,17 @@ public class NewReviewActivity extends AppCompatActivity {
                             reference.child("text").setValue(userText);
                             reference.child("date").setValue(date);
                             if (!isAnonymousReview) {
-                                reference.child("userName").setValue(userName);
+                                reference.child("username").setValue(userInfo.child("username").getValue(String.class));
+                                reference.child("profileImageUrl").setValue(userInfo.child("profileImage").getValue(String.class));
                             }
-                            //uploadImage();
+                            if (filePath != Uri.EMPTY && filePath != null) {
+                                try {
+                                    uploadImage();
+                                    reference.child("photoUrl").setValue(currentUserId+attractionId);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
                         }
 
                         @Override
@@ -89,7 +100,6 @@ public class NewReviewActivity extends AppCompatActivity {
                             // do nothing
                         }
                     });
-
                     showToast("Отзыв успешно сохранён");
                     finish();
                 } catch (Exception ignored) {
@@ -102,7 +112,7 @@ public class NewReviewActivity extends AppCompatActivity {
 
         binding.addPhotoButton.setOnClickListener(v -> selectImage());
         binding.backBtn.setOnClickListener(v -> finish());
-        binding.closeView.setOnClickListener(v -> {
+        binding.closeViewButton.setOnClickListener(v -> {
             filePath = Uri.EMPTY;
             changeAddPhotoButtonState();
         });
@@ -143,18 +153,25 @@ public class NewReviewActivity extends AppCompatActivity {
         }
     }
 
-//    private void uploadImage() {
-//        if (filePath != null) {
-//            FirebaseStorage.getInstance().getReference().child("images/" + currentUserId)
-//                    .putFile(filePath).addOnSuccessListener(taskSnapshot -> {
-//                        showToast(getString(R.string.photo_upload_complete));
-//
-//                        FirebaseStorage.getInstance().getReference().child("images/" + currentUserId).getDownloadUrl()
-//                                .addOnSuccessListener(uri -> FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                                        .child("profileImage").setValue(uri.toString()));
-//                    });
-//        }
-//    }
+    private void uploadImage() throws IOException {
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, baos); // Качество сжатия 50%
+        byte[] data = baos.toByteArray();
+
+        FirebaseStorage.getInstance().getReference().child("reviewsPhotos/" + currentUserId + attractionId)
+                .putBytes(data).addOnSuccessListener(taskSnapshot -> {
+                    FirebaseStorage.getInstance().getReference().child("reviewsPhotos/" + currentUserId + attractionId).getDownloadUrl()
+                            .addOnSuccessListener(uri -> FirebaseDatabase.getInstance()
+                                    .getReference()
+                                    .child("Reviews")
+                                    .child(attractionId)
+                                    .child(String.valueOf(currentUserEmail.hashCode()))
+                                    .child("photoUrl")
+                                    .setValue(uri.toString()));
+                });
+    }
+
 
     private boolean filedValidationCheck() {
         return Objects.requireNonNull(binding.textInputLayout.getEditText()).length() != 0;
@@ -163,12 +180,12 @@ public class NewReviewActivity extends AppCompatActivity {
     private void changeAddPhotoButtonState() {
         if (filePath.equals(Uri.EMPTY)) {
             binding.addPhotoButton.setText("+");
-            binding.closeView.setVisibility(View.GONE);
+            binding.closeViewButton.setVisibility(View.GONE);
             binding.imageView.setVisibility(View.GONE);
             binding.addPhotoButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.baseline_add_a_photo_24, 0);
         } else {
             binding.addPhotoButton.setText("");
-            binding.closeView.setVisibility(View.VISIBLE);
+            binding.closeViewButton.setVisibility(View.VISIBLE);
             binding.imageView.setVisibility(View.VISIBLE);
             binding.addPhotoButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.baseline_autorenew_24, 0);
         }

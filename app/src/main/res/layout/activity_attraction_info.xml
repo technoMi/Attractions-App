@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".CityInfoActivity">
-
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -182,7 +182,19 @@
                     android:numStars="5"
                     android:progressTint="@color/orange"
                     android:secondaryProgressTint="@android:color/transparent"
-                    android:stepSize="1.0" />
+                    android:stepSize="1" />
+
+                <TextView
+                    android:id="@+id/rating_title_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/ubuntu_light"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="Вы также можете оставить отзыв:"
+                    android:textSize="10sp" />
 
                 <Button
                     android:id="@+id/leaveReview"
@@ -209,6 +221,28 @@
                     android:paddingVertical="8dp"
                     android:text="@string/other_rivews_title"
                     android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/reviews_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/single_review"
+                    android:visibility="visible"
+                    layout="@layout/review_item"/>
+
+                <Button
+                    android:id="@+id/more_reviews"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="Все отзывы"/>
 
             </LinearLayout>
 

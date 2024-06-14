@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ssss"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/review_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20dp"
     android:layout_marginTop="15dp"
-    android:background="@drawable/message_from_curr_user"
+    android:background="@drawable/review_container"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,11 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_iv"
+            android:id="@+id/review_profile_iv"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
@@ -31,12 +31,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/review_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="User name" />
+                android:text="Анонимный пользователь" />
 
             <TextView
+                android:id="@+id/review_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -53,20 +55,24 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/review_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="6dp"
-            android:layout_marginVertical="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
             android:textSize="12sp"
             android:text="Some text..." />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/photo"
+        <ImageView
+            android:id="@+id/review_photo"
             android:layout_height="120dp"
-            android:layout_width="300dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginBottom="6dp"/>
+            android:layout_width="wrap_content"
+            android:gravity="start"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
