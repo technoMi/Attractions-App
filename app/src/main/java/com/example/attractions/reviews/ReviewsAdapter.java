@@ -42,6 +42,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         holder.date.setText(review.getDate());
 
         if (!review.username.isEmpty()){
+            holder.username.setText(review.getUsername());
             if (review.profileImageUrl != null) {
                 Glide.with(holder.itemView.getContext()).load(review.profileImageUrl).into(holder.profilePhoto);
             }

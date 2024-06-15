@@ -6,130 +6,142 @@
     android:layout_height="match_parent"
     tools:context=".bottomnav.profile.ProfileFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/content"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible">
+            android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/logout_btn"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:backgroundTint="@android:color/transparent"
-                android:src="@drawable/baseline_logout_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image_view"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="80dp"
-                android:src="@drawable/baseline_person_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible">
 
-            <TextView
-                android:id="@+id/username_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/ubuntu_light"
-                android:textSize="32sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view"
-                tools:text="Download info..." />
+                    <ImageButton
+                        android:id="@+id/logout_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:src="@drawable/baseline_logout_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/usermail_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:fontFamily="@font/ubuntu_light"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/username_tv"
-                app:layout_constraintStart_toStartOf="@+id/username_tv"
-                app:layout_constraintTop_toBottomOf="@+id/username_tv"
-                tools:text="Download info..." />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image_view"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="80dp"
+                        android:src="@drawable/baseline_person_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="120dp"
-                android:layout_height="1px"
-                android:layout_marginTop="24dp"
-                android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/touch_hint"
-                app:layout_constraintStart_toStartOf="@+id/touch_hint"
-                app:layout_constraintTop_toBottomOf="@+id/touch_hint" />
+                    <TextView
+                        android:id="@+id/username_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:fontFamily="@font/ubuntu_light"
+                        android:textSize="32sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view"
+                        tools:text="Download info..." />
 
-            <TextView
-                android:id="@+id/touch_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/change_photo_title"
-                android:textSize="10sp"
-                app:layout_constraintEnd_toEndOf="@+id/profile_image_view"
-                app:layout_constraintStart_toStartOf="@+id/profile_image_view"
-                app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
+                    <TextView
+                        android:id="@+id/usermail_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="@font/ubuntu_light"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="@+id/username_tv"
+                        app:layout_constraintStart_toStartOf="@+id/username_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/username_tv"
+                        tools:text="Download info..." />
 
-            <View
-                android:id="@+id/view2"
-                android:layout_width="120dp"
-                android:layout_height="1px"
-                android:layout_marginTop="24dp"
-                android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/usermail_tv"
-                app:layout_constraintStart_toStartOf="@+id/usermail_tv"
-                app:layout_constraintTop_toBottomOf="@+id/usermail_tv" />
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="120dp"
+                        android:layout_height="1px"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/touch_hint"
+                        app:layout_constraintStart_toStartOf="@+id/touch_hint"
+                        app:layout_constraintTop_toBottomOf="@+id/touch_hint" />
 
-            <TextView
-                android:id="@+id/favorites_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="12dp"
-                android:gravity="center"
-                android:text="@string/favorites_title"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/view2"
-                app:layout_constraintStart_toStartOf="@+id/view2"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                    <TextView
+                        android:id="@+id/touch_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/change_photo_title"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="@+id/profile_image_view"
+                        app:layout_constraintStart_toStartOf="@+id/profile_image_view"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="120dp"
+                        android:layout_height="1px"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/black"
+                        app:layout_constraintEnd_toEndOf="@+id/usermail_tv"
+                        app:layout_constraintStart_toStartOf="@+id/usermail_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/usermail_tv" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favorites_rv"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/favorites_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginHorizontal="12dp"
+                        android:gravity="center"
+                        android:text="@string/favorites_title"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="@+id/view2"
+                        app:layout_constraintStart_toStartOf="@+id/view2"
+                        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/favorites_rv"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="120dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="120dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
 

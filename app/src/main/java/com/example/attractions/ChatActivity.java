@@ -30,6 +30,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
 
+    private boolean isConversationCreatedForInterlocutor = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,9 @@ public class ChatActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId)
                 .child("messages").push().setValue(messageInfo);
+        if (!isConversationCreatedForInterlocutor) {
+            
+        }
     }
 
     private void loadInterlocutorInfo(String name, String imgUrl) {
@@ -90,6 +94,7 @@ public class ChatActivity extends AppCompatActivity {
                             return;
                         } else {
                             binding.textView.setVisibility(View.INVISIBLE);
+                            isConversationCreatedForInterlocutor = true;
                         }
 
                         List<Message> messages = new ArrayList<>();
@@ -110,7 +115,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        // do nothing
                     }
                 });
     }

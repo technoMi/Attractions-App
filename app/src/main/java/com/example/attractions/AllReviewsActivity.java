@@ -60,8 +60,8 @@ public class AllReviewsActivity extends AppCompatActivity {
 
                         LinearLayoutManager llm = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
 //                        llm.setStackFromEnd(true);
-                        binding.messagesRv.setLayoutManager(llm);
-                        binding.messagesRv.setAdapter(new ReviewsAdapter(reviews));
+                        binding.reviewsRv.setLayoutManager(llm);
+                        binding.reviewsRv.setAdapter(new ReviewsAdapter(reviews));
                     }
 
                     @Override
