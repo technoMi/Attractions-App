@@ -75,6 +75,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatViewHolder>{
                             String interlocutorProfileImage = dataSnapshot.child("profileImage").getValue(String.class);
 
                             intent.putExtra("interlocutorName", interlocutorName);
+                            intent.putExtra("interlocutorId", userId);
                             intent.putExtra("interlocutorProfileImage", interlocutorProfileImage);
                             intent.putExtra("chatId", chats.get(position).getChat_id());
 

@@ -1,6 +1,8 @@
 package com.example.attractions.bottomnav.chats;
 
 import androidx.fragment.app.Fragment;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,9 +44,11 @@ public class ChatsFragment extends Fragment {
         ArrayList<Chat> chats = new ArrayList<>();
 
         String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chats.clear();
                 try {
                     String chatsStr = Objects.requireNonNull(snapshot.child("Users").child(uid).child("chats").getValue()).toString();
                     String[] chatsIds = chatsStr.split(",");
@@ -67,8 +71,12 @@ public class ChatsFragment extends Fragment {
                 if (chats.isEmpty()) {
                     binding.thereIsNothingLabel.setVisibility(View.VISIBLE);
                 } else {
+                    binding.thereIsNothingLabel.setVisibility(View.INVISIBLE);
                     binding.chatsRv.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.chatsRv.setAdapter(new ChatsAdapter(chats));
+                }
+                if (binding.chatsRv.getAdapter() != null) {
+                    binding.chatsRv.getAdapter().notifyDataSetChanged();
                 }
                 binding.progressBar2.setVisibility(View.INVISIBLE);
             }

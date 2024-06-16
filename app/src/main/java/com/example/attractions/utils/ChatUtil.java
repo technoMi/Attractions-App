@@ -20,14 +20,14 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ChatUtil {
 
-    public static void createChat(User user, Context context){
+    public static void createChat(User user, Context context) {
         String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         String chatId = generateChatId(uid, user.uid);
 
         DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId);
         chatRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                if (task.getResult().exists()){
+            if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
                     Toast.makeText(context, "Чат с этим пользователем уже существует!", Toast.LENGTH_SHORT).show();
                 } else {
                     HashMap<String, String> chatInfo = new HashMap<>();
@@ -36,56 +36,72 @@ public class ChatUtil {
 
                     chatRef.setValue(chatInfo);
                     addChatIdToUser(uid, chatId);
-                    addChatIdToUser(user.uid, chatId);
+                    //addChatIdToUser(user.uid, chatId);
                     Toast.makeText(context, "Создан новый чат", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+    public static void createChatForInterlocutor(User user, Context context) {
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        String chatId = generateChatId(uid, user.uid);
 
+        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId);
+        chatRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+//                HashMap<String, String> chatInfo = new HashMap<>();
+//                chatInfo.put("user1", uid);
+//                chatInfo.put("user2", user.uid);
 
-    private static String generateChatId(String userId1, String userId2){
-        String sumUser1User2 = userId1+userId2;
+                //chatRef.setValue(chatInfo);
+                //addChatIdToUser(uid, chatId);
+                addChatIdToUser(user.uid, chatId);
+            }
+        });
+    }
+
+    private static String generateChatId(String userId1, String userId2) {
+        String sumUser1User2 = userId1 + userId2;
         char[] charArray = sumUser1User2.toCharArray();
         Arrays.sort(charArray);
 
         return new String(charArray);
     }
 
-    private static void addChatIdToUser(String uid, String chatId){
+    private static void addChatIdToUser(String uid, String chatId) {
         FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        DataSnapshot chatsSnapshot = snapshot
-                                .child("Users")
-                                .child(uid)
-                                .child("chats");
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot chatsSnapshot = snapshot
+                        .child("Users")
+                        .child(uid)
+                        .child("chats");
 
-                        DatabaseReference chatsReference = snapshot
-                                .child("Users")
-                                .child(uid)
-                                .child("chats")
-                                .getRef();
+                DatabaseReference chatsReference = snapshot
+                        .child("Users")
+                        .child(uid)
+                        .child("chats")
+                        .getRef();
 
-                        String chats;
+                String chats;
 
-                        chats = chatsSnapshot.getValue(String.class);
-                        if (chats == null) chats = "";
-                        String chatsUpd = addIdToStr(chats, chatId);
+                chats = chatsSnapshot.getValue(String.class);
+                if (chats == null) chats = "";
+                String chatsUpd = addIdToStr(chats, chatId);
 
-                        chatsReference.setValue(chatsUpd);
-                    }
+                chatsReference.setValue(chatsUpd);
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // do nothing
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // do nothing
+            }
+        });
     }
 
-    private static String addIdToStr(String str, String chatId){
-        str += (str.isEmpty()) ? chatId : (","+chatId);
+    private static String addIdToStr(String str, String chatId) {
+        str += (str.isEmpty()) ? chatId : ("," + chatId);
         return str;
     }
 }

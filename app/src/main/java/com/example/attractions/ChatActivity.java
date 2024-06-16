@@ -1,5 +1,7 @@
 package com.example.attractions;
 
+import static com.example.attractions.utils.ChatUtil.createChatForInterlocutor;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.attractions.users.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +33,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
 
+    private String interlocutorId;
+    private String interlocutorName;
+    private String interlocutorProfileImage;
+
     private boolean isConversationCreatedForInterlocutor = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +44,12 @@ public class ChatActivity extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        interlocutorId = getIntent().getStringExtra("interlocutorId");
         String chatId = getIntent().getStringExtra("chatId");
-        String interlocutorName = getIntent().getStringExtra("interlocutorName");
-        String interlocutorProfileImage = getIntent().getStringExtra("interlocutorProfileImage");
+        interlocutorName = getIntent().getStringExtra("interlocutorName");
+        interlocutorProfileImage = getIntent().getStringExtra("interlocutorProfileImage");
 
+        assert interlocutorProfileImage != null;
         loadInterlocutorInfo(interlocutorName, interlocutorProfileImage);
 
         loadMessages(chatId);
@@ -71,7 +80,10 @@ public class ChatActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId)
                 .child("messages").push().setValue(messageInfo);
         if (!isConversationCreatedForInterlocutor) {
-            
+            User interlocutor = new User(interlocutorId, interlocutorName, interlocutorProfileImage);
+            createChatForInterlocutor(
+                    interlocutor,
+                    getApplicationContext());
         }
     }
 
