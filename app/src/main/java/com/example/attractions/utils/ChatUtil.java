@@ -54,15 +54,32 @@ public class ChatUtil {
     }
 
     private static void addChatIdToUser(String uid, String chatId){
-        FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
-                .child("chats").get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        String chats = task.getResult().getValue().toString();
+        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        DataSnapshot chatsSnapshot = snapshot
+                                .child("Users")
+                                .child(uid)
+                                .child("chats");
+
+                        DatabaseReference chatsReference = snapshot
+                                .child("Users")
+                                .child(uid)
+                                .child("chats")
+                                .getRef();
+
+                        String chats;
+
+                        chats = chatsSnapshot.getValue(String.class);
+                        if (chats == null) chats = "";
                         String chatsUpd = addIdToStr(chats, chatId);
 
-                        FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
-                                .child("chats").setValue(chatsUpd);
+                        chatsReference.setValue(chatsUpd);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // do nothing
                     }
                 });
     }
@@ -71,5 +88,4 @@ public class ChatUtil {
         str += (str.isEmpty()) ? chatId : (","+chatId);
         return str;
     }
-
 }
