@@ -1,13 +1,18 @@
 package com.example.attractions.message;
 
+
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -34,7 +39,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = messages.get(position);
 
-        holder.messageTv.setText(message.getText());
+        if (message.getText() == null) {
+            String photoUrl = message.getPhotoUrl();
+            Glide.with(holder.itemView.getContext()).load(photoUrl).into(holder.photoImageView);
+            holder.messageTv.setVisibility(View.GONE);
+        } else {
+            holder.messageTv.setText(message.getText());
+            holder.photoImageView.setVisibility(View.GONE);
+        }
         holder.dateTv.setText(message.getDate());
     }
 
@@ -55,9 +67,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
         TextView messageTv, dateTv;
 
+        ImageView photoImageView;
+
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            photoImageView = itemView.findViewById(R.id.photo_image_view);
             messageTv = itemView.findViewById(R.id.message_tv);
             dateTv = itemView.findViewById(R.id.message_date_tv);
         }

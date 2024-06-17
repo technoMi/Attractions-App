@@ -15,7 +15,7 @@
         android:id="@+id/there_is_nothing_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="There is no dialogue"
+        android:text="У Вас нет ни одного диалога"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -2,12 +2,13 @@ package com.example.attractions.message;
 
 public class Message {
 
-    private String id, ownerId, text, date;
+    private String id, ownerId, text, photoUrl, date;
 
-    public Message(String id, String ownerId, String text, String date) {
+    public Message(String id, String ownerId, String text, String photoUrl, String date) {
         this.id = id;
         this.ownerId = ownerId;
         this.text = text;
+        this.photoUrl = photoUrl;
         this.date = date;
     }
 
@@ -33,6 +34,14 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getDate() {
